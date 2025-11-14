@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Entregue — Buquê</title>
+  <style>
+    :root{ --bg:#fff7f9; --accent:#e76f8e; --paper:#fff; --shadow: rgba(0,0,0,0.12);}    
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#333;background:linear-gradient(180deg,#fff 0%,#fff7f9 100%);}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+    /* card */
+    .card{width:100%;max-width:420px;background:transparent;display:flex;flex-direction:column;align-items:center;gap:18px}
+
+    /* envelope */
+    .envelope{width:86%;max-width:360px;aspect-ratio:1.6/1;position:relative;cursor:pointer;transition:transform .18s ease;transform-origin:center;}
+    .envelope:active{transform:scale(.995)}
+
+    .paper{position:absolute;inset:0;border-radius:14px;background:var(--paper);box-shadow:0 8px 24px var(--shadow);overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .front{position:absolute;inset:0;background:linear-gradient(180deg,#fff 0%,#fffefc 100%);border-radius:14px;display:flex;align-items:center;justify-content:center}
+
+    .flap{position:absolute;left:0;right:0;top:0;height:58%;transform-origin:50% 0%;transition:transform .7s cubic-bezier(.2,.9,.3,1);background:linear-gradient(180deg,#f8eef0,#f5dfe4);clip-path:polygon(0 0,100% 0,50% 100%);display:flex;align-items:flex-start;justify-content:center;padding-top:10%;border-radius:14px}
+    .envelope.open .flap{transform:translateY(-6%) rotateX(180deg)}
+
+    .stamp{position:absolute;right:14px;top:14px;background:var(--accent);color:#fff;padding:6px 8px;border-radius:8px;font-weight:700;letter-spacing:.08em;font-size:12px;opacity:0;transition:opacity .32s ease}
+    .stamp.small{display:block;font-weight:600;font-size:10px;opacity:.95}
+
+    .label{position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,0.85);padding:6px 10px;border-radius:10px;font-weight:600;font-size:13px;box-shadow:0 4px 10px rgba(0,0,0,0.06)}
+
+    /* hidden content (buquê) */
+    .inside{position:absolute;inset:10% 6% 6% 6%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+    .flower-wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:translateY(22%);opacity:0;transition:all .7s cubic-bezier(.2,.9,.3,1)}
+    .envelope.open .flower-wrap{transform:translateY(0);opacity:1;pointer-events:auto}
+
+    /* bouquet svg sizing */
+    svg.bouquet{width:64%;max-width:240px;height:auto}
+
+    /* message below */
+    .msg{font-size:16px;text-align:center;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,0.9);box-shadow:0 6px 18px rgba(0,0,0,0.06);font-weight:700}
+    .msg .heart{display:inline-block;margin-left:8px;font-size:18px;color:var(--accent)}
+
+    /* instruction */
+    .hint{font-size:13px;color:#7a7a7a;margin-top:6px}
+
+    /* responsive tweaks */
+    @media(min-width:480px){.wrap{padding:32px}.card{gap:22px}.msg{font-size:18px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main">
+      <div class="envelope" id="envelope" aria-label="Envelope com buquê - toque para abrir" tabindex="0">
+        <div class="paper front">
+          <div class="flap"> <!-- flap shows 'ENTREGUE' -->
+            <div class="stamp" aria-hidden="true">ENTREGUE</div>
+          </div>
+          <div class="inside" aria-hidden="false">
+            <div class="flower-wrap" id="flowerWrap">
+              <img src="vecteezy_beautiful-natural-red-rose-flowers-bouquet_21779395.png" alt="Buquê de rosas vermelhas" style="width:79%;max-width:100%;border-radius:0;box-shadow:none;object-fit:contain;image-rendering:auto;" /> />
+              <div style="margin-top:10px;font-weight:700;color:#5b5b5b"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="msg" id="msg">Toque no envelope para <span style="text-transform:uppercase">abrir</span> <span class="heart">❤</span></div>
+      <div class="hint"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const env = document.getElementById('envelope');
+      env.addEventListener('click', toggle);
+      env.addEventListener('keypress', function(e){ if(e.key==='Enter' || e.key===' ') toggle() });
+      function toggle(){
+        env.classList.toggle('open');
+        const msg = document.getElementById('msg');
+        // toggle message and stamp visibility
+        if(env.classList.contains('open')){
+          msg.textContent = 'Buquê entregue — para o meu garoto ❤';
+          document.querySelector('.stamp').style.opacity = 1;
+        } else {
+          msg.textContent = 'Toque no envelope para abrir ❤';
+          document.querySelector('.stamp').style.opacity = 0;
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
